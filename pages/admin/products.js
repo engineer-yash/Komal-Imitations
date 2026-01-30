@@ -222,8 +222,8 @@ export default function AdminProducts() {
           </div>
         )}
 
-        <div className="bg-white shadow-sm overflow-hidden" data-testid="products-list">
-          <table className="min-w-full divide-y divide-border">
+        <div className="bg-white shadow-sm overflow-x-auto" data-testid="products-list">
+          <table className="min-w-[800px] divide-y divide-border">
             <thead className="bg-secondary">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase">Image</th>
