@@ -13,7 +13,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const folderName = 'komal_imitation_jewellery';
+    // Updated to match exact folder structure: Home/komal_imitation_jewellery
+    const folderName = 'Home/komal_imitation_jewellery';
     
     // Fetch all images from the specific folder
     const result = await cloudinary.api.resources({

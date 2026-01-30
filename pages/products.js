@@ -174,7 +174,10 @@ export default function Products() {
                       {product.categoryId?.name && (
                         <p className="text-xs text-muted-foreground mb-2">{product.categoryId.name}</p>
                       )}
-                      <div className="flex justify-between items-center">
+                      {product.description && (
+                        <p className="text-xs text-gray-600 mb-2 line-clamp-2">{product.description}</p>
+                      )}
+                      <div className="flex justify-between items-center mt-2">
                         <p className="text-primary font-bold">₹{product.price.toLocaleString()}</p>
                         {product.gender && (
                           <span className="text-xs text-muted-foreground">{product.gender}</span>

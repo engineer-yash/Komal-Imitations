@@ -10,7 +10,7 @@ export default function AdminDashboard() {
     products: 0,
     categories: 0,
     messages: 0,
-    catalogs: 0,
+    collections: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -28,18 +28,18 @@ export default function AdminDashboard() {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
-      const [products, categories, messages, catalogs] = await Promise.all([
+      const [products, categories, messages, collections] = await Promise.all([
         axios.get('/api/products', config),
         axios.get('/api/categories', config),
         axios.get('/api/contact', config),
-        axios.get('/api/catalogs', config),
+        axios.get('/api/collections', config),
       ]);
 
       setStats({
         products: products.data.length,
         categories: categories.data.length,
         messages: messages.data.filter(m => m.status === 'new').length,
-        catalogs: catalogs.data.length,
+        collections: collections.data.length,
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
   const menuItems = [
     { name: 'Products', href: '/admin/products', icon: '💎' },
     { name: 'Categories', href: '/admin/categories', icon: '📊' },
-    { name: 'Catalogs', href: '/admin/catalogs', icon: '📚' },
+    { name: 'Collections', href: '/admin/collections', icon: '🖼️' },
     { name: 'Messages', href: '/admin/messages', icon: '✉️' },
     { name: 'Homepage', href: '/admin/homepage', icon: '🏠' },
     { name: 'Cloudinary Import', href: '/admin/cloudinary-import', icon: '☁️' },
@@ -104,9 +104,9 @@ export default function AdminDashboard() {
             <p className="text-3xl font-bold">{stats.messages}</p>
           </div>
           <div className="bg-white p-6 shadow-sm">
-            <div className="text-3xl mb-2">📚</div>
-            <p className="text-sm text-muted-foreground mb-1">Catalogs</p>
-            <p className="text-3xl font-bold">{stats.catalogs}</p>
+            <div className="text-3xl mb-2">🖼️</div>
+            <p className="text-sm text-muted-foreground mb-1">Collections</p>
+            <p className="text-3xl font-bold">{stats.collections}</p>
           </div>
         </div>
 
