@@ -199,20 +199,19 @@ export default function Home() {
               <p className="text-muted-foreground">Trending pieces everyone loves</p>
             </div>
             
-            <div className="relative">
+            <div className="relative overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentSlide}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.5 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                   className="grid grid-cols-2 md:grid-cols-4 gap-4"
                 >
                   {getVisibleProducts().map((product, index) => (
-                    <motion.div
+                    <div
                       key={product._id}
-                      whileHover={{ y: -10, scale: 1.02 }}
                       className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300"
                     >
                       <div className="relative h-48 overflow-hidden">
@@ -234,7 +233,7 @@ export default function Home() {
                           <p className="text-primary font-semibold text-xs">Visit Shop For Price</p>
                         )}
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </motion.div>
               </AnimatePresence>
