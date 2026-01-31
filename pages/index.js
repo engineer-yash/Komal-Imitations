@@ -13,12 +13,14 @@ export default function Home() {
   const [testimonials, setTestimonials] = useState([]);
   const [products, setProducts] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const [homeRes, productsRes, categoriesRes, testimonialsRes, allProductsRes] = await Promise.all([
         axios.get('/api/homepage'),
@@ -34,6 +36,8 @@ export default function Home() {
       setProducts(allProductsRes.data.slice(0, 12));
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,8 +65,17 @@ export default function Home() {
         <meta name="description" content="Discover exquisite imitation jewellery in Pune. Premium designs for every occasion." />
       </Head>
 
-      {/* Hero Section - Enhanced */}
-      <section className="relative h-[600px] md:h-[750px] overflow-hidden" data-testid="hero-section">
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center bg-secondary">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-20 w-20 border-4 border-primary border-t-transparent mb-4"></div>
+            <p className="text-xl text-gray-600">Loading...</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Hero Section - Enhanced */}
+          <section className="relative h-[600px] md:h-[750px] overflow-hidden" data-testid="hero-section">
         <motion.div 
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
@@ -496,6 +509,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </>
+      )}
     </Layout>
   );
 }

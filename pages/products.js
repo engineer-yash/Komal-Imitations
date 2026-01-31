@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     category: '',
     gender: '',
@@ -40,6 +41,7 @@ export default function Products() {
   };
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
       const params = new URLSearchParams();
       if (filters.category) params.append('category', filters.category);
@@ -51,6 +53,8 @@ export default function Products() {
       setProducts(res.data);
     } catch (error) {
       console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -152,7 +156,12 @@ export default function Products() {
           </div>
 
           <div className="lg:col-span-3">
-            {products.length === 0 ? (
+            {loading ? (
+              <div className="text-center py-20">
+                <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
+                <p className="mt-4 text-gray-600">Loading products...</p>
+              </div>
+            ) : products.length === 0 ? (
               <div className="text-center py-12" data-testid="no-products-message">
                 <p className="text-muted-foreground">No products found matching your filters.</p>
               </div>

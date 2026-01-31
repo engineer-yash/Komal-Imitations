@@ -16,7 +16,7 @@ export default function ImageUploadWidget({
   const [loadingImages, setLoadingImages] = useState(false);
 
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
@@ -39,13 +39,16 @@ export default function ImageUploadWidget({
         uploadFormData
       );
 
+      // Set the image URL immediately to show preview
       onChange(uploadRes.data.secure_url);
-      alert('Image uploaded successfully!');
+      alert('✅ Image uploaded successfully!');
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Failed to upload image. Please try again.');
+      alert('❌ Failed to upload image. Please try again.');
     } finally {
       setUploading(false);
+      // Reset the file input to allow selecting the same file again if needed
+      e.target.value = '';
     }
   };
 
@@ -83,18 +86,19 @@ export default function ImageUploadWidget({
             onChange={handleFileUpload}
             disabled={uploading}
             className="hidden"
-            id={`file-upload-${label}`}
+            id={`file-upload-${label.replace(/\s+/g, '-')}`}
           />
           <div 
             className={`w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-primary transition-colors ${
               uploading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
-            onClick={() => !uploading && document.getElementById(`file-upload-${label}`).click()}
           >
             {uploading ? (
               <span className="text-primary">📤 Uploading...</span>
             ) : (
-              <span className="text-gray-600">📁 Upload from Device</span>
+              <span className="text-gray-600 cursor-pointer" onClick={() => !uploading && document.getElementById(`file-upload-${label.replace(/\s+/g, '-')}`).click()}>
+                📁 Upload from Device
+              </span>
             )}
           </div>
         </label>

@@ -4,12 +4,11 @@ import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-export default function CloudinaryImport() {
+export default function CloudinaryDelete() {
   const router = useRouter();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [analyzing, setAnalyzing] = useState(false);
-  const [analyzed, setAnalyzed] = useState([]);
+  const [deleting, setDeleting] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -30,7 +29,7 @@ export default function CloudinaryImport() {
       setImages(res.data.images);
       setSuccess(`Found ${res.data.count} images from Cloudinary`);
     } catch (err) {
-      setError('Failed to fetch images: ' + err.response?.data?.error || err.message);
+      setError('Failed to fetch images: ' + (err.response?.data?.error || err.message));
     } finally {
       setLoading(false);
     }
@@ -52,78 +51,58 @@ export default function CloudinaryImport() {
     setSelectedImages([]);
   };
 
-  const analyzeImages = async (autoImport = false) => {
+  const deleteSelectedImages = async () => {
     if (selectedImages.length === 0) {
-      setError('Please select images to analyze');
+      setError('Please select images to delete');
       return;
     }
 
-    setAnalyzing(true);
+    if (!confirm(`Are you sure you want to delete ${selectedImages.length} images? This will also delete any products using these images.`)) {
+      return;
+    }
+
+    setDeleting(true);
     setError('');
     setSuccess('');
 
     try {
-      const imagesToAnalyze = images.filter((img) =>
+      const token = localStorage.getItem('token');
+      const imagesToDelete = images.filter((img) =>
         selectedImages.includes(img.publicId)
       );
 
-      const res = await axios.post('/api/cloudinary/analyze-and-import', {
-        images: imagesToAnalyze,
-        autoImport,
+      const res = await axios.post('/api/cloudinary/delete-images', {
+        images: imagesToDelete,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (autoImport) {
-        setSuccess(`Successfully imported ${res.data.analyzed} products!`);
-        setSelectedImages([]);
-        setAnalyzed([]);
-      } else {
-        setAnalyzed(res.data.results);
-        setSuccess(`Analyzed ${res.data.analyzed} images. Review and import below.`);
-      }
+      setSuccess(`✅ Successfully deleted ${res.data.deleted} images from Cloudinary and ${res.data.productsDeleted} products from database!`);
+      setSelectedImages([]);
+      
+      // Refresh the images list
+      fetchImages();
 
       if (res.data.errors.length > 0) {
-        setError(`${res.data.errors.length} images failed to analyze`);
+        setError(`⚠️ ${res.data.errors.length} images failed to delete`);
       }
     } catch (err) {
-      setError('Failed to analyze images: ' + err.response?.data?.error || err.message);
+      setError('Failed to delete images: ' + (err.response?.data?.error || err.message));
     } finally {
-      setAnalyzing(false);
-    }
-  };
-
-  const importAnalyzed = async () => {
-    setLoading(true);
-    setError('');
-
-    try {
-      const token = localStorage.getItem('token');
-      const promises = analyzed.map((item) =>
-        axios.post('/api/products', item.productData, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      );
-
-      await Promise.all(promises);
-      setSuccess(`Successfully imported ${analyzed.length} products!`);
-      setAnalyzed([]);
-      setSelectedImages([]);
-    } catch (err) {
-      setError('Failed to import products: ' + err.message);
-    } finally {
-      setLoading(false);
+      setDeleting(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Head>
-        <title>Cloudinary Import - Admin</title>
+        <title>Delete Cloudinary Images - Admin</title>
       </Head>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold font-playfair" data-testid="page-title">
-            Import from Cloudinary
+            Delete Cloudinary Images
           </h1>
           <button
             onClick={() => router.push('/admin/dashboard')}
@@ -165,11 +144,11 @@ export default function CloudinaryImport() {
         {/* Images Grid */}
         {images.length > 0 && (
           <div className="bg-white p-6 rounded-lg shadow mb-8">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
               <h2 className="text-xl font-semibold">
-                Step 2: Select Images ({selectedImages.length} selected)
+                Step 2: Select Images to Delete ({selectedImages.length} selected)
               </h2>
-              <div className="space-x-2">
+              <div className="flex gap-2 flex-wrap">
                 <button
                   onClick={selectAll}
                   className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded"
@@ -192,9 +171,9 @@ export default function CloudinaryImport() {
                 <div
                   key={image.publicId}
                   onClick={() => toggleImageSelection(image.publicId)}
-                  className={`relative cursor-pointer border-4 transition-all ${
+                  className={`relative cursor-pointer border-4 transition-all rounded-lg overflow-hidden ${
                     selectedImages.includes(image.publicId)
-                      ? 'border-primary'
+                      ? 'border-red-500 ring-2 ring-red-300'
                       : 'border-transparent hover:border-gray-300'
                   }`}
                   data-testid={`image-${image.publicId}`}
@@ -208,7 +187,7 @@ export default function CloudinaryImport() {
                     />
                   </div>
                   {selectedImages.includes(image.publicId) && (
-                    <div className="absolute top-2 right-2 bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center">
+                    <div className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold">
                       ✓
                     </div>
                   )}
@@ -221,96 +200,20 @@ export default function CloudinaryImport() {
 
             <div className="flex gap-4">
               <button
-                onClick={() => analyzeImages(false)}
-                disabled={analyzing || selectedImages.length === 0}
-                className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 disabled:opacity-50"
-                data-testid="analyze-button"
+                onClick={deleteSelectedImages}
+                disabled={deleting || selectedImages.length === 0}
+                className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700 disabled:opacity-50 font-semibold"
+                data-testid="delete-button"
               >
-                {analyzing ? 'Analyzing...' : 'Analyze Selected Images'}
-              </button>
-              <button
-                onClick={() => analyzeImages(true)}
-                disabled={analyzing || selectedImages.length === 0}
-                className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 disabled:opacity-50"
-                data-testid="auto-import-button"
-              >
-                {analyzing ? 'Processing...' : 'Analyze & Auto-Import'}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Analyzed Results */}
-        {analyzed.length > 0 && (
-          <div className="bg-white p-6 rounded-lg shadow">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Step 3: Review & Import</h2>
-              <button
-                onClick={importAnalyzed}
-                disabled={loading}
-                className="bg-primary text-white px-6 py-3 rounded hover:bg-[#B5952F] disabled:opacity-50"
-                data-testid="import-analyzed-button"
-              >
-                {loading ? 'Importing...' : `Import ${analyzed.length} Products`}
+                {deleting ? '🗑️ Deleting...' : `🗑️ Delete ${selectedImages.length} Selected Images`}
               </button>
             </div>
 
-            <div className="space-y-6" data-testid="analyzed-results">
-              {analyzed.map((item, index) => (
-                <div key={index} className="border p-4 rounded-lg">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="relative h-48">
-                      <Image
-                        src={item.imageInfo.url}
-                        alt={item.productData.name}
-                        fill
-                        className="object-cover rounded"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <h3 className="text-lg font-semibold mb-2">
-                        {item.productData.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-2">
-                        {item.productData.description}
-                      </p>
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div>
-                          <span className="font-semibold">Category:</span>{' '}
-                          {item.analysis.category}
-                        </div>
-                        <div>
-                          <span className="font-semibold">Price:</span> ₹
-                          {item.productData.price}
-                        </div>
-                        <div>
-                          <span className="font-semibold">Gender:</span>{' '}
-                          {item.productData.gender}
-                        </div>
-                        <div>
-                          <span className="font-semibold">Size:</span>{' '}
-                          {item.productData.size}
-                        </div>
-                      </div>
-                      {item.productData.features?.length > 0 && (
-                        <div className="mt-2">
-                          <span className="font-semibold text-sm">Features:</span>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {item.productData.features.map((feature, i) => (
-                              <span
-                                key={i}
-                                className="bg-gray-100 text-xs px-2 py-1 rounded"
-                              >
-                                {feature}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
+              <p className="text-sm text-yellow-800">
+                <strong>⚠️ Warning:</strong> This action will permanently delete selected images from Cloudinary 
+                AND any products in your database that use these images. This cannot be undone.
+              </p>
             </div>
           </div>
         )}

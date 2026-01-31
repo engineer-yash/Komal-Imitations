@@ -61,7 +61,7 @@ export default function AdminDashboard() {
     { name: 'Testimonials', href: '/admin/testimonials', icon: '⭐' },
     { name: 'Messages', href: '/admin/messages', icon: '✉️' },
     { name: 'Homepage', href: '/admin/homepage', icon: '🏠' },
-    { name: 'Cloudinary Import', href: '/admin/cloudinary-import', icon: '☁️' },
+    { name: 'Delete Images', href: '/admin/cloudinary-import', icon: '🗑️' },
   ];
 
   return (

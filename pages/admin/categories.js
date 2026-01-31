@@ -9,6 +9,7 @@ export default function AdminCategories() {
   const [categories, setCategories] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ name: '', slug: '', description: '', imageUrl: '' });
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function AdminCategories() {
   }, []);
 
   const fetchCategories = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem('token');
       const res = await axios.get('/api/categories', {
@@ -29,6 +31,9 @@ export default function AdminCategories() {
       setCategories(res.data);
     } catch (error) {
       console.error('Error:', error);
+      alert('Error loading categories. Please refresh the page.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -157,39 +162,62 @@ export default function AdminCategories() {
           </div>
         )}
 
-        <div className="bg-white shadow-sm overflow-hidden" data-testid="categories-list">
-          <table className="min-w-full divide-y divide-border">
-            <thead className="bg-secondary">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase">Slug</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {categories.map((category) => (
-                <tr key={category._id}>
-                  <td className="px-6 py-4">{category.name}</td>
-                  <td className="px-6 py-4">{category.slug}</td>
-                  <td className="px-6 py-4 space-x-2">
-                    <button
-                      onClick={() => handleEdit(category)}
-                      className="text-primary hover:underline"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(category._id)}
-                      className="text-red-600 hover:underline"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {loading ? (
+          <div className="bg-white shadow-sm p-12 text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+            <p className="mt-4 text-gray-600">Loading categories...</p>
+          </div>
+        ) : (
+          <div className="bg-white shadow-sm overflow-x-auto" data-testid="categories-list">
+            <div className="min-w-[600px]">
+              <table className="w-full divide-y divide-border">
+                <thead className="bg-secondary">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Thumbnail</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Slug</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {categories.map((category) => (
+                    <tr key={category._id}>
+                      <td className="px-6 py-4">
+                        {category.imageUrl ? (
+                          <img
+                            src={category.imageUrl}
+                            alt={category.name}
+                            className="w-16 h-16 object-cover rounded"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
+                            No Image
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">{category.name}</td>
+                      <td className="px-6 py-4">{category.slug}</td>
+                      <td className="px-6 py-4 space-x-2">
+                        <button
+                          onClick={() => handleEdit(category)}
+                          className="text-primary hover:underline"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(category._id)}
+                          className="text-red-600 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
