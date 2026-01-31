@@ -83,16 +83,16 @@ export default function Navbar() {
                 >
                   <div className="relative w-10 h-10">
                     <Image
-                      src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769777460/Logo_zozcty.jpg"
+                      src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769839541/Logo_p6yljj.png"
                       alt="Komal Jewellers"
                       fill
                       className="object-contain"
                       priority
                     />
                   </div>
-                  <span className="text-xl font-playfair font-bold text-primary hidden sm:block">
+                  {/* <span className="text-xl font-playfair font-bold text-primary hidden sm:block">
                     KOMAL
-                  </span>
+                  </span> */}
                 </motion.div>
               ) : (
                 // Full Logo by default (centered)
@@ -106,19 +106,19 @@ export default function Navbar() {
                 >
                   <div className="relative w-16 h-16 sm:w-20 sm:h-20">
                     <Image
-                      src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769782665/Gemini_Generated_Image_5lblt65lblt65lbl-removebg_fxir4a.png"
+                      src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769839542/MainLogo_j0xsqm.png"
                       alt="Komal Jewellers"
                       fill
                       className="object-contain"
                       priority
                     />
                   </div>
-                  <div className="text-center">
+                  {/* <div className="text-center">
                     <h1 className="text-2xl sm:text-3xl font-playfair font-bold text-primary tracking-wide">
                       KOMAL
                     </h1>
                     <p className="text-xs sm:text-sm text-gray-600 tracking-widest">JEWELLERS</p>
-                  </div>
+                  </div> */}
                 </motion.div>
               )}
             </AnimatePresence>

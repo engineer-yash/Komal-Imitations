@@ -21,7 +21,7 @@ export default function Footer() {
         >
           <div className="relative w-64 h-20 mx-auto mb-6">
             <Image
-              src="https://customer-assets.emergentagent.com/job_4b1fb28f-218c-488b-9019-df0fd7bcb977/artifacts/r1g7lbmk_Slogan.jpeg"
+              src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769839541/Slogan_sdzejt.png"
               alt="Komal Jewellers - Timeless Elegance"
               fill
               className="object-contain"
