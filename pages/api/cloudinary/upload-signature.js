@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { folder = 'komal_imitation_jewellery' } = req.body;
+    const { folder = 'Home/komal_imitation_jewellery' } = req.body;
     
     // Generate timestamp
     const timestamp = Math.round(new Date().getTime() / 1000);

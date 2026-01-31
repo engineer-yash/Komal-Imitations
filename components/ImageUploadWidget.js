@@ -57,7 +57,7 @@ export default function ImageUploadWidget({
       setShowBrowser(true);
     } catch (error) {
       console.error('Error fetching images:', error);
-      alert('Failed to fetch Cloudinary images');
+      alert('Failed to fetch Cloudinary images. Please ensure you are logged in.');
     } finally {
       setLoadingImages(false);
     }

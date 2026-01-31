@@ -1,16 +1,19 @@
-# Komal Imitation Jewellery - Premium E-Commerce Website
+# Komal Jewellers - Premium E-Commerce Website
 
-A luxurious, modern jewellery e-commerce website built with Next.js, featuring a serverless backend and MongoDB Atlas database. Fully deployable on Vercel.
+A luxurious, modern jewellery e-commerce website built with Next.js, featuring a comprehensive admin panel, MongoDB database, and Cloudinary image management. Fully deployable on Vercel.
 
 ## 🎯 Project Overview
 
-This is a complete, production-ready website for **Komal Imitation Jewellery**, a premium jewellery shop based in Pune, Maharashtra. The website features:
+This is a complete, production-ready website for **Komal Jewellers**, a premium jewellery shop based in Pune, Maharashtra. The website features:
 
-- **Premium Design**: Luxurious gold accents with ivory/white backgrounds
+- **Premium Design**: Luxurious gold accents (#D4AF37) with elegant animations
+- **Responsive Logos**: Full logo on desktop, compact "K" logo on mobile/scroll
+- **Image Management**: Direct upload from device + Cloudinary browser integration
 - **Full E-Commerce**: Product browsing with advanced filters
-- **Admin Panel**: Complete product, category, and content management
-- **Responsive**: Mobile-first design that works on all devices
-- **Performance**: Optimized images and smooth animations
+- **Admin Panel**: Complete content management (products, categories, testimonials, homepage)
+- **Enhanced UX**: Product highlights carousel, customer testimonials, smooth animations
+- **Mobile-First**: Optimized for all devices
+- **Performance**: Optimized images with Next.js Image component
 - **SEO-Ready**: Proper meta tags and semantic HTML
 
 ## 🛠️ Tech Stack
@@ -19,7 +22,7 @@ This is a complete, production-ready website for **Komal Imitation Jewellery**, 
 - **Next.js 14** - React framework with serverless API routes
 - **React 19** - Latest React version
 - **Tailwind CSS** - Utility-first CSS framework
-- **Framer Motion** - Smooth animations
+- **Framer Motion** - Smooth animations and transitions
 - **Axios** - HTTP client
 
 ### Backend
@@ -32,41 +35,49 @@ This is a complete, production-ready website for **Komal Imitation Jewellery**, 
 ### Cloud Services
 - **Vercel** - Hosting platform (recommended)
 - **MongoDB Atlas** - Database hosting
-- **Cloudinary** - Image hosting
+- **Cloudinary** - Image hosting and management
 
 ## 📁 Project Structure
 
 ```
-nextjs-app/
+/app/
 ├── pages/
 │   ├── api/               # Serverless API routes
 │   │   ├── auth/          # Authentication endpoints
 │   │   ├── products/      # Product CRUD
 │   │   ├── categories/    # Category management
 │   │   ├── catalogs/      # Catalog management
+│   │   ├── testimonials/  # Testimonials CRUD
 │   │   ├── contact/       # Contact form
-│   │   └── homepage/      # Homepage content
+│   │   ├── homepage/      # Homepage content
+│   │   └── cloudinary/    # Image upload & fetch
 │   ├── admin/             # Admin panel pages
 │   │   ├── login.js
 │   │   ├── dashboard.js
-│   │   └── [management pages]
-│   ├── index.js           # Homepage
+│   │   ├── products.js
+│   │   ├── categories.js
+│   │   ├── testimonials.js
+│   │   ├── homepage.js
+│   │   ├── cloudinary-import.js
+│   │   └── [other management pages]
+│   ├── index.js           # Homepage (enhanced)
 │   ├── products.js        # Products listing
-│   ├── catalog.js         # Catalogs page
-│   ├── about.js           # About us
+│   ├── about.js           # About page (enhanced)
 │   ├── contact.js         # Contact page
 │   ├── _app.js            # App wrapper
 │   └── _document.js       # HTML document
 ├── components/            # Reusable components
-│   ├── Navbar.js
+│   ├── Navbar.js          # Enhanced with responsive logos
 │   ├── Footer.js
-│   └── Layout.js
+│   ├── Layout.js
+│   └── ImageUploadWidget.js  # Upload + Cloudinary browser
 ├── models/                # MongoDB models
 │   ├── User.js
 │   ├── Product.js
 │   ├── Category.js
 │   ├── Catalog.js
 │   ├── HomePage.js
+│   ├── Testimonial.js
 │   └── ContactMessage.js
 ├── lib/                   # Utilities
 │   ├── mongodb.js         # Database connection
@@ -76,27 +87,24 @@ nextjs-app/
 └── public/                # Static assets
 ```
 
-## 🚀 Local Development Setup
+## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+ installed
-- Yarn package manager
+- Yarn package manager (DO NOT use npm)
 - MongoDB Atlas account (free tier works)
-- Cloudinary account (optional, for image uploads)
+- Cloudinary account (for image uploads)
 
-### Step 1: Clone and Install
+### Step 1: Install Dependencies
 
 ```bash
-# Navigate to project directory
-cd /app/nextjs-app
-
-# Install dependencies
+cd /app
 yarn install
 ```
 
 ### Step 2: Environment Variables
 
-The `.env.local` file is already configured with:
+Create `.env.local` file in the root directory:
 
 ```env
 MONGODB_URI=mongodb+srv://gohelyash94_db_user:ux9l1TGPa29rc1k7@admin.s4ectaz.mongodb.net/komal_jewellery?retryWrites=true&w=majority
@@ -107,7 +115,7 @@ JWT_SECRET=komal_jewellery_secret_key_2026_secure
 NEXT_PUBLIC_WHATSAPP=+918668586824
 ```
 
-⚠️ **IMPORTANT FOR PRODUCTION**: Never commit `.env.local` to GitHub. These are provided for development only.
+⚠️ **IMPORTANT**: Never commit `.env.local` to GitHub. Change credentials for production.
 
 ### Step 3: Run Development Server
 
@@ -151,16 +159,28 @@ The application will be available at:
 4. **Deploy**
    - Click "Deploy"
    - Vercel will build and deploy automatically
-   - You'll get a live URL like `komal-jewellery.vercel.app`
+   - You'll get a live URL like `komal-jewellers.vercel.app`
 
-### Custom Domain (Optional)
+## 🖼️ Image Upload Features
 
-1. Go to Vercel project settings
-2. Navigate to "Domains"
-3. Add your custom domain
-4. Update DNS settings as instructed
+### Two Ways to Add Images:
 
-## 🔐 Admin Setup
+1. **Upload from Device** (NEW)
+   - Click "Upload from Device" button
+   - Select image from your computer
+   - Image automatically uploads to Cloudinary folder: `Home/komal_imitation_jewellery`
+   - URL is saved to MongoDB
+
+2. **Browse Cloudinary**
+   - Click "Browse" button
+   - View all existing images from Cloudinary
+   - Select any image to use
+   - Works everywhere: products, categories, hero sections, about page
+
+### Cloudinary Folder Structure:
+All images are stored in: `Home/komal_imitation_jewellery/`
+
+## 🔐 Admin Panel Access
 
 ### First Login
 
@@ -174,79 +194,57 @@ The application will be available at:
 
 ### Admin Features
 
-- **Products**: Add, edit, delete products with images
-- **Categories**: Manage product categories
+- **Dashboard**: Overview and quick access
+- **Products**: Add, edit, delete products with image upload
+- **Categories**: Manage product categories with images
+- **Testimonials**: Manage customer reviews (NEW)
 - **Catalogs**: Upload and manage PDF catalogs
 - **Messages**: View contact form submissions
-- **Homepage**: Edit hero section and about content
+- **Homepage**: Edit hero section, about content with images
+- **Cloudinary Import**: Fetch and import images from Cloudinary (FIXED)
 
-## 🖼️ Cloudinary Image Usage
+### Fix Applied:
+- Cloudinary import no longer redirects to login
+- Token authentication properly handled
+- Image upload widget available on all admin forms
 
-The website uses Cloudinary for image hosting. Images are already uploaded and categorized.
+## 🎨 Design System
 
-### Using Images in Admin Panel
+### Brand Colors
+- **Primary Gold**: #D4AF37
+- **Secondary Gold**: #B5952F
+- **Background**: #FFFFFF (White)
+- **Secondary Background**: #F9F5F0 (Ivory)
+- **Text**: #1A1A1A
+- **Muted Text**: #666666
 
-When adding products/categories, use Cloudinary URLs:
-```
-https://res.cloudinary.com/dkinrfyq7/image/upload/v1234567890/product-name.jpg
-```
+### Logos
+- **Desktop/Default**: Full logo with "KOMAL JEWELLERS" text
+  - URL: `https://res.cloudinary.com/dkinrfyq7/image/upload/v1769782665/Gemini_Generated_Image_5lblt65lblt65lbl-removebg_fxir4a.png`
+- **Mobile/Scrolled**: Compact "K" logo
+  - URL: `https://res.cloudinary.com/dkinrfyq7/image/upload/v1769777460/Logo_zozcty.jpg`
 
-### Analyzing Existing Images
+### Typography
+- **Headings**: Playfair Display (Serif)
+- **Body**: System fonts (San-serif)
 
-Images are pre-categorized into:
-- Necklaces
-- Earrings
-- Bangles
-- Rings
-- Sets
-
-The design guidelines at `/app/design_guidelines.json` contain pre-selected images.
+### Animations
+- Smooth fade + slide on scroll
+- Hover effects on cards
+- Product carousel with auto-slide
+- Enhanced micro-interactions
 
 ## 📊 Database Schema
 
 ### Collections
 
 1. **users** - Admin authentication
-2. **products** - Product catalog
+2. **products** - Product catalog (with featured flag)
 3. **categories** - Product categories
 4. **catalogs** - Downloadable catalogs
-5. **homepagecontents** - Homepage editable content
-6. **contactmessages** - Contact form submissions
-
-### Product Model
-```javascript
-{
-  name: String,
-  categoryId: ObjectId,
-  imageUrl: String,
-  price: Number,
-  size: String,
-  gender: 'Male' | 'Female' | 'Unisex',
-  description: String,
-  featured: Boolean
-}
-```
-
-## 🎨 Design System
-
-The website follows a luxury design system:
-
-### Colors
-- **Primary Gold**: #D4AF37
-- **Background**: #FFFFFF (White)
-- **Secondary**: #F9F5F0 (Ivory)
-- **Text**: #1A1A1A
-- **Muted**: #666666
-
-### Typography
-- **Headings**: Playfair Display (Serif)
-- **Body**: Lato (Sans-serif)
-
-### Animations
-- Minimal and classy
-- Fade + slide on scroll
-- Hover effects on cards
-- Smooth transitions
+5. **testimonials** - Customer reviews (NEW)
+6. **homepagecontents** - Homepage editable content
+7. **contactmessages** - Contact form submissions
 
 ## 🔧 API Endpoints
 
@@ -254,55 +252,56 @@ The website follows a luxury design system:
 - `GET /api/products` - Get all products (with filters)
 - `GET /api/categories` - Get all categories
 - `GET /api/catalogs` - Get all catalogs
+- `GET /api/testimonials` - Get testimonials
 - `GET /api/homepage` - Get homepage content
 - `POST /api/contact` - Submit contact form
+- `GET /api/cloudinary/fetch-images` - Fetch Cloudinary images
 
 ### Protected Endpoints (Require JWT)
 - `POST /api/products` - Create product
 - `PUT /api/products` - Update product
 - `DELETE /api/products` - Delete product
 - `POST /api/categories` - Create category
+- `POST /api/testimonials` - Create testimonial
+- `POST /api/cloudinary/upload-signature` - Get upload signature
 - `PUT /api/homepage` - Update homepage content
 
-### Authentication
-```javascript
-// Login
-POST /api/auth/login
-Body: { email, password }
-Response: { token, user }
+## 📱 Enhanced Features
 
-// Use token in headers
-Authorization: Bearer <token>
-```
+### Homepage
+- ✅ Animated hero section with decorative elements
+- ✅ Product highlights carousel (auto-slide)
+- ✅ Category cards with hover effects
+- ✅ Featured products section
+- ✅ Customer testimonials section (NEW)
+- ✅ Enhanced trust badges
 
-## 📱 Features
+### About Page
+- ✅ Enhanced hero section
+- ✅ Our story with rich content
+- ✅ Core values showcase
+- ✅ Why choose us section
+- ✅ Store location with call-to-action
 
-### Public Features
-- ✅ Responsive homepage with hero section
-- ✅ Product browsing with filters (category, gender, price)
-- ✅ Category-based navigation
-- ✅ Downloadable catalogs
-- ✅ About us page with local business story
-- ✅ Contact form with WhatsApp integration
-- ✅ Google Maps integration
-- ✅ Smooth animations and transitions
+### Admin Panel
+- ✅ Image upload from device
+- ✅ Cloudinary browser integration
+- ✅ Testimonials management
+- ✅ All sections have image upload capability
 
-### Admin Features
-- ✅ Secure JWT authentication
-- ✅ Product management (CRUD)
-- ✅ Category management
-- ✅ Catalog management
-- ✅ Homepage content editing
-- ✅ Contact form message viewing
-- ✅ Dashboard with statistics
+## 🐛 Issues Fixed
+
+1. ✅ **Cloudinary Import Authentication**: Fixed redirect to login issue
+2. ✅ **Image Upload Widget**: Updated folder path to `Home/komal_imitation_jewellery`
+3. ✅ **Upload Signature**: Consistent folder across all uploads
+4. ✅ **Logo Integration**: Responsive logos properly implemented
 
 ## 🔒 Security Notes
 
-### For Production Deployment:
+### For Production:
 
 1. **Change Default Credentials**
    - Update admin email/password after first login
-   - Store in secure password manager
 
 2. **Environment Variables**
    - Never commit `.env.local` to GitHub
@@ -316,79 +315,32 @@ Authorization: Bearer <token>
 
 4. **API Keys**
    - Rotate Cloudinary keys if exposed
-   - Use Cloudinary signed uploads for production
+   - Use Cloudinary signed uploads
 
-## 🐛 Troubleshooting
+## 📞 Business Information
 
-### Build Errors
-
-**Issue**: `Module not found`
-```bash
-rm -rf node_modules .next
-yarn install
-yarn build
-```
-
-**Issue**: MongoDB connection timeout
-- Check MONGODB_URI format
-- Verify MongoDB Atlas network access
-- Ensure cluster is active
-
-### Runtime Issues
-
-**Issue**: Images not loading
-- Verify Cloudinary URLs
-- Check `next.config.js` image domains
-- Ensure proper CORS settings
-
-**Issue**: Admin login fails
-- Check JWT_SECRET is set
-- Verify MongoDB connection
-- Check browser console for errors
-
-## 📞 Support
-
-### Business Information
-**Komal Imitation Jewellery**
+**Komal Jewellers**
 - **Location**: Shubhansha Darga, Bohri Ali, 330, Borali, Rameshwar Chouk, Raviwar Peth, Pune, Maharashtra 411002
 - **Phone**: +91 86685 86824
 - **Hours**: Open Daily, 9:00 AM - 9:00 PM
-- **Rating**: 5.0 on Google Maps
+- **WhatsApp**: Available for inquiries
 
-### Technical Support
-For technical issues or questions:
-1. Check this README
-2. Review error logs
-3. Check MongoDB Atlas logs
-4. Check Vercel deployment logs
+## 🎯 Recent Updates
+
+### Version 2.0 (Latest)
+- ✨ Enhanced homepage with product carousel
+- ✨ Customer testimonials section
+- ✨ Improved animations throughout
+- ✨ Direct image upload from device
+- ✨ Fixed Cloudinary import authentication
+- ✨ Responsive logo implementation
+- ✨ Enhanced About page with rich content
+- ✨ Better mobile experience
 
 ## 📄 License
 
-This project is proprietary and confidential. All rights reserved by Komal Imitation Jewellery.
-
-## 🎯 Next Steps After Deployment
-
-1. **Add Initial Content**
-   - Log into admin panel
-   - Add categories (Necklaces, Earrings, Bangles, Rings)
-   - Upload products with Cloudinary images
-   - Upload catalog PDFs
-
-2. **SEO Optimization**
-   - Submit sitemap to Google Search Console
-   - Set up Google Analytics
-   - Add structured data markup
-
-3. **Marketing**
-   - Share WhatsApp number with customers
-   - Add website link to Google My Business
-   - Promote on social media
-
-4. **Monitoring**
-   - Set up Vercel analytics
-   - Monitor contact form submissions
-   - Track product views
+This project is proprietary and confidential. All rights reserved by Komal Jewellers.
 
 ---
 
-Built with ❤️ for Komal Imitation Jewellery
+Built with ❤️ for Komal Jewellers | Premium Jewellery in Pune

@@ -1,344 +1,380 @@
-# Vercel Deployment Guide - Komal Imitation Jewellery
+# Deployment Guide - Komal Jewellers Website
 
-## Quick Deploy (5 Minutes)
+## Overview
 
-### Step 1: Prepare Your Repository
+This guide covers deploying the Komal Jewellers e-commerce website to Vercel. The application is a Next.js 14 application with MongoDB Atlas backend and Cloudinary image management.
 
-```bash
-# Initialize git (if not already done)
-cd /app/nextjs-app
-git init
-git add .
-git commit -m "Initial commit: Komal Jewellery website"
+## Pre-Deployment Checklist
 
-# Create GitHub repository and push
-git remote add origin https://github.com/YOUR_USERNAME/komal-jewellery.git
-git branch -M main
-git push -u origin main
-```
+### 1. Code Repository
+- [ ] All code committed to Git
+- [ ] `.env.local` NOT committed (in `.gitignore`)
+- [ ] `node_modules` NOT committed
+- [ ] `.next` build folder NOT committed
+- [ ] All dependencies in `package.json`
 
-### Step 2: Deploy to Vercel
+### 2. Environment Variables Required
 
-1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
-2. Click **"New Project"**
-3. Import your `komal-jewellery` repository
-4. Vercel will automatically detect Next.js
+You'll need these for Vercel:
 
-### Step 3: Configure Environment Variables
-
-In Vercel dashboard, add these environment variables:
-
-```
-MONGODB_URI=mongodb+srv://gohelyash94_db_user:ux9l1TGPa29rc1k7@admin.s4ectaz.mongodb.net/komal_jewellery?retryWrites=true&w=majority
-
-CLOUDINARY_CLOUD_NAME=dkinrfyq7
-CLOUDINARY_API_KEY=199147376425354
-CLOUDINARY_API_SECRET=yf-xnvBvO50SFSphu_JzEzNsXxQ
-
-JWT_SECRET=komal_jewellery_secret_key_2026_secure
-
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/komal_jewellery?retryWrites=true&w=majority
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+JWT_SECRET=your_secure_random_string_here
 NEXT_PUBLIC_WHATSAPP=+918668586824
 ```
 
-**Important**: Mark `NEXT_PUBLIC_WHATSAPP` as available to "Preview & Production" so it's accessible in the browser.
+### 3. Database Setup
 
-### Step 4: Deploy
+**MongoDB Atlas Configuration:**
+1. Ensure MongoDB Atlas cluster is running
+2. Whitelist Vercel IPs:
+   - Go to MongoDB Atlas → Network Access
+   - Add IP: `0.0.0.0/0` (allows all IPs - Vercel uses dynamic IPs)
+   - Or use specific Vercel IP ranges
+3. Verify connection string is correct
+4. Test connection locally first
 
-Click **"Deploy"** and wait 2-3 minutes. You'll get a live URL like:
-```
-https://komal-jewellery.vercel.app
-```
+### 4. Cloudinary Setup
 
----
+**Required Configuration:**
+1. Verify Cloudinary account is active
+2. Folder structure: `Home/komal_imitation_jewellery/`
+3. Ensure API credentials are correct
+4. Test upload functionality locally
 
-## Post-Deployment Setup
+## Vercel Deployment Steps
 
-### 1. Test the Website
+### Option 1: Deploy via Vercel Dashboard (Recommended)
 
-Visit your deployed URL and check:
-- ✅ Homepage loads with images
-- ✅ Products page works
-- ✅ Contact form submits
-- ✅ WhatsApp button works
+#### Step 1: Push to GitHub
 
-### 2. Login to Admin Panel
+```bash
+# Initialize git if not already done
+git init
 
-Navigate to: `https://your-url.vercel.app/admin/login`
+# Add all files
+git add .
 
-Credentials:
-```
-Email: admin@komal.com
-Password: admin@komal.com
-```
+# Commit
+git commit -m "Deploy Komal Jewellers website"
 
-### 3. Add Initial Content
+# Add remote repository
+git remote add origin https://github.com/your-username/komal-jewellers.git
 
-After logging in to admin panel:
-
-#### a) Create Categories
-Navigate to **Categories** and add:
-- Necklaces (slug: `necklaces`)
-- Earrings (slug: `earrings`)
-- Bangles (slug: `bangles`)
-- Rings (slug: `rings`)
-
-Use these image URLs from design guidelines:
-```
-Necklaces: https://images.unsplash.com/photo-1743877427459-ed950b323498?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwxfHxnb2xkJTIwbmVja2xhY2UlMjBzZXQlMjBvbiUyMHdoaXRlJTIwYmFja2dyb3VuZCUyMGhpZ2glMjBxdWFsaXR5fGVufDB8fHx8MTc2OTY4NDUxNnww&ixlib=rb-4.1.0&q=85
-
-Earrings: https://images.unsplash.com/photo-1760264554244-a72760f89ef3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxnb2xkJTIwZWFycmluZ3MlMjB3aGl0ZSUyMGJhY2tncm91bmQlMjBsdXh1cnl8ZW58MHx8fHwxNzY5Njg0NTMzfDA&ixlib=rb-4.1.0&q=85
-
-Bangles: https://images.unsplash.com/photo-1758995116383-f51775896add?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHw0fHxnb2xkJTIwYmFuZ2xlcyUyMHdoaXRlJTIwYmFja2dyb3VuZCUyMGx1eHVyeXxlbnwwfHx8fDE3Njk2ODQ1MzV8MA&ixlib=rb-4.1.0&q=85
+# Push to GitHub
+git push -u origin main
 ```
 
-#### b) Add Sample Products
-Navigate to **Products** and add sample products. Example:
+#### Step 2: Import to Vercel
+
+1. Go to [vercel.com](https://vercel.com)
+2. Sign up/Login with GitHub
+3. Click "New Project"
+4. Import your GitHub repository
+5. Vercel auto-detects Next.js configuration
+
+#### Step 3: Configure Project
+
+**Framework Preset**: Next.js (auto-detected)
+
+**Root Directory**: `./` (default)
+
+**Build Command**: `yarn build` or `next build` (auto-detected)
+
+**Output Directory**: `.next` (auto-detected)
+
+**Install Command**: `yarn install` (auto-detected)
+
+#### Step 4: Add Environment Variables
+
+In Vercel Project Settings → Environment Variables, add:
+
 ```
-Name: Gold Plated Necklace Set
-Category: Necklaces
-Price: 2500
-Gender: Female
-Image: Use Cloudinary image URLs
-Featured: Check for homepage display
+MONGODB_URI = mongodb+srv://gohelyash94_db_user:ux9l1TGPa29rc1k7@admin.s4ectaz.mongodb.net/komal_jewellery?retryWrites=true&w=majority
+
+CLOUDINARY_CLOUD_NAME = dkinrfyq7
+CLOUDINARY_API_KEY = 199147376425354
+CLOUDINARY_API_SECRET = yf-xnvBvO50SFSphu_JzEzNsXxQ
+
+JWT_SECRET = komal_jewellery_secret_key_2026_secure
+
+NEXT_PUBLIC_WHATSAPP = +918668586824
 ```
 
-#### c) Upload Catalogs (Optional)
-Navigate to **Catalogs** and add PDF catalogs with titles and descriptions.
+⚠️ **Important**: Set these for all environments (Production, Preview, Development)
 
----
+#### Step 5: Deploy
 
-## Custom Domain Setup
+1. Click "Deploy"
+2. Wait for build to complete (2-5 minutes)
+3. Vercel will provide a live URL
 
-### Connect Your Own Domain
+### Option 2: Deploy via Vercel CLI
 
-1. **In Vercel Dashboard**:
-   - Go to Project Settings → Domains
-   - Click "Add Domain"
-   - Enter your domain (e.g., `komaljewellery.com`)
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-2. **Update DNS Records**:
-   Add these records at your domain provider:
+# Login to Vercel
+vercel login
 
-   **For apex domain (komaljewellery.com)**:
+# Deploy
+vercel
+
+# Follow prompts:
+# - Set up and deploy? Yes
+# - Which scope? Your account
+# - Link to existing project? No
+# - Project name? komal-jewellers
+# - Directory? ./
+# - Override settings? No
+
+# Deploy to production
+vercel --prod
+```
+
+## Post-Deployment
+
+### 1. Verify Deployment
+
+**Test these features:**
+- [ ] Homepage loads correctly
+- [ ] Product pages work
+- [ ] Admin login functions
+- [ ] Image uploads work
+- [ ] Cloudinary browser works
+- [ ] MongoDB connection active
+- [ ] API routes respond
+- [ ] Contact form submits
+
+### 2. Admin Setup
+
+1. Navigate to `https://your-domain.vercel.app/admin/login`
+2. Login with:
+   ```
+   Email: admin@komal.com
+   Password: admin@komal.com
+   ```
+3. System creates admin account on first login
+4. Change password immediately
+
+### 3. Content Population
+
+1. **Add Categories**
+   - Navigate to Admin → Categories
+   - Add: Necklaces, Earrings, Bangles, Rings, Sets
+   - Upload images for each
+
+2. **Add Products**
+   - Navigate to Admin → Products
+   - Use image upload or Cloudinary browser
+   - Fill in details and prices
+
+3. **Add Testimonials**
+   - Navigate to Admin → Testimonials
+   - Add customer reviews
+   - Mark some as featured
+
+4. **Update Homepage**
+   - Navigate to Admin → Homepage
+   - Update hero title, subtitle, image
+   - Update about section
+
+### 4. Custom Domain (Optional)
+
+1. Go to Vercel Project → Settings → Domains
+2. Add your custom domain (e.g., `komaljewellers.com`)
+3. Update DNS records as instructed by Vercel:
    ```
    Type: A
    Name: @
    Value: 76.76.21.21
-   ```
-
-   **For www subdomain**:
-   ```
+   
    Type: CNAME
    Name: www
    Value: cname.vercel-dns.com
    ```
-
-3. **Wait for DNS Propagation** (5-10 minutes)
-
-4. **Enable HTTPS**:
-   Vercel automatically provisions SSL certificates
-
----
-
-## MongoDB Atlas Setup (If Using Own Database)
-
-### Create New Cluster
-
-1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Create free cluster (M0)
-3. Create database user with password
-4. Whitelist IP: `0.0.0.0/0` (all IPs for serverless)
-5. Get connection string:
-   ```
-   mongodb+srv://<username>:<password>@cluster.mongodb.net/komal_jewellery?retryWrites=true&w=majority
-   ```
-6. Update `MONGODB_URI` in Vercel environment variables
-7. Redeploy
-
----
-
-## Cloudinary Setup (If Using Own Account)
-
-### Create Account
-
-1. Sign up at [Cloudinary](https://cloudinary.com)
-2. Get credentials from dashboard:
-   - Cloud Name
-   - API Key
-   - API Secret
-3. Update environment variables in Vercel
-4. Upload jewellery images to Cloudinary
-5. Use image URLs in admin panel
-
----
+4. Wait for DNS propagation (up to 48 hours)
 
 ## Troubleshooting
 
-### Issue: "Module not found" error
+### Build Fails
 
-**Solution**:
+**Error: Module not found**
 ```bash
-cd /app/nextjs-app
+# Locally, clear and reinstall
 rm -rf node_modules .next
 yarn install
-git add .
-git commit -m "Fix dependencies"
-git push
+yarn build
 ```
 
-### Issue: MongoDB connection timeout
+**Error: Environment variables not found**
+- Check Vercel dashboard → Settings → Environment Variables
+- Ensure all required variables are set
+- Redeploy after adding variables
 
-**Check**:
-- MongoDB URI is correct
-- Database user password has no special characters
-- Network access allows `0.0.0.0/0`
-- Cluster is active (not paused)
+### Runtime Errors
 
-**Fix**: 
-Update MongoDB URI in Vercel, then redeploy
+**MongoDB Connection Failed**
+- Verify MongoDB Atlas is accessible from `0.0.0.0/0`
+- Check connection string format
+- Ensure cluster is not paused
+- Check Vercel logs for specific errors
 
-### Issue: Images not loading
+**Images Not Loading**
+- Verify Cloudinary credentials
+- Check `next.config.js` has correct image domains:
+  ```js
+  images: {
+    domains: ['images.unsplash.com', 'res.cloudinary.com'],
+  }
+  ```
+- Ensure images exist in Cloudinary
 
-**Check**:
-- Image URLs are accessible
-- Cloudinary credentials are correct
-- `next.config.js` includes image domains
+**API Routes 404**
+- Verify file structure in `/pages/api/`
+- Check function exports
+- Review Vercel function logs
 
-**Fix**:
-```javascript
-// next.config.js
-images: {
-  domains: ['images.unsplash.com', 'res.cloudinary.com'],
-}
+### Performance Issues
+
+**Slow Page Load**
+- Enable Vercel Analytics
+- Optimize images (already using Next.js Image)
+- Check MongoDB query performance
+- Consider adding Redis caching
+
+**Function Timeout**
+- Vercel serverless functions timeout at 10s (Hobby plan)
+- Optimize database queries
+- Add indexes to MongoDB collections
+- Consider upgrading Vercel plan
+
+## Monitoring
+
+### Vercel Analytics
+
+1. Enable in Project Settings → Analytics
+2. Monitor:
+   - Page views
+   - Performance metrics
+   - Real User Monitoring (RUM)
+
+### Error Tracking
+
+1. Check Vercel logs:
+   ```
+   vercel logs [deployment-url]
+   ```
+2. View in dashboard: Project → Deployments → [deployment] → Logs
+
+### Database Monitoring
+
+1. MongoDB Atlas Dashboard
+2. Check:
+   - Active connections
+   - Query performance
+   - Storage usage
+   - Network traffic
+
+## Rollback
+
+**If deployment has issues:**
+
+1. Go to Vercel Dashboard
+2. Project → Deployments
+3. Find previous working deployment
+4. Click "..." → "Promote to Production"
+
+**Via CLI:**
+```bash
+vercel rollback
 ```
 
-### Issue: API routes return 404
+## Security Best Practices
 
-**Check**:
-- All files are in `/pages/api/` directory
-- Vercel build completed successfully
-- Check Vercel function logs
+### Production Checklist
 
-**Fix**: Check Vercel deployment logs and error messages
-
----
-
-## Performance Optimization
-
-### Enable Image Optimization
-
-Vercel automatically optimizes images through Next.js Image component.
-
-### Add Caching Headers
-
-In `next.config.js`:
-```javascript
-async headers() {
-  return [
-    {
-      source: '/(.*)',
-      headers: [
-        {
-          key: 'Cache-Control',
-          value: 'public, max-age=3600, must-revalidate',
-        },
-      ],
-    },
-  ]
-}
-```
-
-### Monitor Performance
-
-- Use Vercel Analytics (free)
-- Check Core Web Vitals
-- Monitor API function execution times
-
----
-
-## Security Checklist
-
-- ✅ Change admin password after deployment
-- ✅ Use strong JWT_SECRET (random 32+ characters)
-- ✅ Enable MongoDB IP whitelist (if not serverless)
-- ✅ Rotate API keys every 6 months
-- ✅ Use HTTPS only (auto-enabled by Vercel)
-- ✅ Never commit `.env.local` to git
-
----
+- [ ] Change default admin credentials
+- [ ] Update JWT_SECRET to strong random value
+- [ ] Enable MongoDB IP whitelist (not 0.0.0.0/0)
+- [ ] Rotate Cloudinary API keys
+- [ ] Enable HTTPS (automatic on Vercel)
+- [ ] Set up CSP headers
+- [ ] Enable MongoDB Atlas backup
+- [ ] Set up monitoring alerts
 
 ## Maintenance
 
-### Regular Updates
+### Regular Tasks
 
-```bash
-# Pull latest changes
-git pull
+**Weekly:**
+- Check error logs
+- Review performance metrics
+- Backup MongoDB data
 
-# Update dependencies
-yarn upgrade
+**Monthly:**
+- Update dependencies
+- Review and rotate API keys
+- Check disk usage (Cloudinary)
+- Review analytics
 
-# Test locally
-yarn dev
+**Quarterly:**
+- Security audit
+- Performance optimization
+- Update content
+- Review user feedback
 
-# Deploy
-git push
-```
+## Scaling Considerations
 
-### Backup Database
+### When to Scale
 
-Use MongoDB Atlas automated backups or:
-```bash
-# Manual backup
-mongodump --uri="mongodb+srv://..." --out=backup/
-```
+**Signs you need to upgrade:**
+- Function timeouts increasing
+- Bandwidth limits reached
+- MongoDB connection limits
+- Slow page load times
 
-### Monitor Uptime
+### Scaling Options
 
-- Use Vercel's built-in monitoring
-- Set up uptime monitoring (UptimeRobot, etc.)
-- Check MongoDB Atlas metrics
+1. **Vercel Plan Upgrade**
+   - More serverless function execution time
+   - Higher bandwidth
+   - Better analytics
 
----
+2. **MongoDB Atlas Upgrade**
+   - More storage
+   - Better performance
+   - Advanced features
+
+3. **CDN Optimization**
+   - Already using Vercel Edge Network
+   - Cloudinary CDN for images
+
+4. **Database Optimization**
+   - Add indexes
+   - Optimize queries
+   - Implement caching
 
 ## Support
 
-### Vercel Support
-- Documentation: https://vercel.com/docs
-- Community: https://github.com/vercel/vercel/discussions
+### Resources
 
-### MongoDB Support
-- Documentation: https://docs.mongodb.com
-- Community: https://www.mongodb.com/community/forums
+- **Vercel Docs**: https://vercel.com/docs
+- **Next.js Docs**: https://nextjs.org/docs
+- **MongoDB Atlas**: https://docs.atlas.mongodb.com/
+- **Cloudinary**: https://cloudinary.com/documentation
 
-### Website Issues
-Check logs:
-- Vercel Dashboard → Project → Functions
-- Browser Console (F12)
-- MongoDB Atlas → Metrics
+### Getting Help
 
----
-
-## Success Checklist
-
-After deployment, verify:
-
-- [ ] Website loads at Vercel URL
-- [ ] Homepage displays correctly
-- [ ] Products page filters work
-- [ ] Contact form submits successfully
-- [ ] WhatsApp button opens chat
-- [ ] Google Maps embed loads
-- [ ] Admin login works
-- [ ] Admin can add/edit products
-- [ ] Mobile responsive design works
-- [ ] Images load quickly
-- [ ] SEO meta tags present
+1. Check Vercel Status: https://www.vercel-status.com/
+2. MongoDB Atlas Support
+3. Review error logs
+4. Check GitHub Issues
 
 ---
 
-**Congratulations! Your website is live!** 🎉
-
-Share your URL: `https://komal-jewellery.vercel.app`
-
-Next: Add to Google My Business and social media profiles.
+✅ **Deployment Complete!** Your Komal Jewellers website is now live.
