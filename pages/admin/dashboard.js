@@ -58,6 +58,7 @@ export default function AdminDashboard() {
     { name: 'Products', href: '/admin/products', icon: '💎' },
     { name: 'Categories', href: '/admin/categories', icon: '📊' },
     { name: 'Collections', href: '/admin/collections', icon: '🖼️' },
+    { name: 'Testimonials', href: '/admin/testimonials', icon: '⭐' },
     { name: 'Messages', href: '/admin/messages', icon: '✉️' },
     { name: 'Homepage', href: '/admin/homepage', icon: '🏠' },
     { name: 'Cloudinary Import', href: '/admin/cloudinary-import', icon: '☁️' },

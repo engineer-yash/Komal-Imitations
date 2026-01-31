@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
+import ImageUploadWidget from '../../components/ImageUploadWidget';
 
 export default function AdminCatalogs() {
   const router = useRouter();
@@ -111,12 +112,10 @@ export default function AdminCatalogs() {
                 className="w-full px-4 py-2 border border-border rounded-sm"
                 data-testid="catalog-file-input"
               />
-              <input
-                type="text"
-                placeholder="Thumbnail URL (optional)"
+              <ImageUploadWidget
+                label="Catalog Thumbnail Image"
                 value={formData.thumbnailUrl}
-                onChange={(e) => setFormData({ ...formData, thumbnailUrl: e.target.value })}
-                className="w-full px-4 py-2 border border-border rounded-sm"
+                onChange={(url) => setFormData({ ...formData, thumbnailUrl: url })}
               />
               <textarea
                 placeholder="Description (optional)"

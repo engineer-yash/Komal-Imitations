@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
+import ImageUploadWidget from '../../components/ImageUploadWidget';
 
 export default function AdminCategories() {
   const router = useRouter();
@@ -131,13 +132,13 @@ export default function AdminCategories() {
                   data-testid="category-slug-input"
                 />
               </div>
-              <input
-                type="text"
-                placeholder="Image URL (optional)"
+              
+              <ImageUploadWidget
+                label="Category Image"
                 value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                className="w-full px-4 py-2 border border-border rounded-sm"
+                onChange={(url) => setFormData({ ...formData, imageUrl: url })}
               />
+              
               <textarea
                 placeholder="Description (optional)"
                 value={formData.description}

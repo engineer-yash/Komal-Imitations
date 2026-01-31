@@ -7,6 +7,8 @@ const HomePageSchema = new mongoose.Schema({
   aboutTitle: String,
   aboutText: String,
   aboutImage: String,
+  aboutImage2: String,
+  aboutText2: String,
   // Gallery sections
   galleries: [{
     title: String,
@@ -24,7 +26,28 @@ const HomePageSchema = new mongoose.Schema({
     imageUrl: String,
     cloudinaryPublicId: String,
     order: Number,
-  }]
+  }],
+  // Trust badges
+  trustBadges: [{
+    icon: String,
+    title: String,
+    description: String,
+    order: Number,
+  }],
+  // Why Choose Us
+  whyChooseUs: [{
+    icon: String,
+    title: String,
+    description: String,
+    order: Number,
+  }],
+  // Newsletter section
+  newsletterTitle: String,
+  newsletterSubtitle: String,
+  newsletterEnabled: {
+    type: Boolean,
+    default: true,
+  },
 }, { timestamps: true });
 
 export default mongoose.models.HomePage || mongoose.model('HomePage', HomePageSchema);

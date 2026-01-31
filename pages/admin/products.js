@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
+import ImageUploadWidget from '../../components/ImageUploadWidget';
 
 export default function AdminProducts() {
   const router = useRouter();
@@ -42,45 +43,6 @@ export default function AdminProducts() {
       setCategories(categoriesRes.data);
     } catch (error) {
       console.error('Error:', error);
-    }
-  };
-
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setUploading(true);
-    try {
-      // Get upload signature
-      const signatureRes = await axios.post('/api/cloudinary/upload-signature', {
-        folder: 'Home/komal_imitation_jewellery'
-      });
-
-      // Upload to Cloudinary
-      const uploadFormData = new FormData();
-      uploadFormData.append('file', file);
-      uploadFormData.append('api_key', signatureRes.data.apiKey);
-      uploadFormData.append('timestamp', signatureRes.data.timestamp);
-      uploadFormData.append('signature', signatureRes.data.signature);
-      uploadFormData.append('folder', signatureRes.data.folder);
-
-      const uploadRes = await axios.post(
-        `https://api.cloudinary.com/v1_1/${signatureRes.data.cloudName}/image/upload`,
-        uploadFormData
-      );
-
-      setFormData(prev => ({
-        ...prev,
-        imageUrl: uploadRes.data.secure_url,
-        cloudinaryPublicId: uploadRes.data.public_id
-      }));
-      
-      alert('Image uploaded successfully!');
-    } catch (error) {
-      console.error('Upload error:', error);
-      alert('Failed to upload image');
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -199,38 +161,17 @@ export default function AdminProducts() {
                     <option key={cat._id} value={cat._id}>{cat.name}</option>
                   ))}
                 </select>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-2">Upload Image from Device</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileUpload}
-                    disabled={uploading}
-                    className="w-full px-4 py-2 border border-border rounded-sm"
-                    data-testid="product-image-upload"
-                  />
-                  {uploading && (
-                    <p className="text-sm text-primary mt-1">Uploading to Cloudinary...</p>
-                  )}
                 </div>
                 
-                <input
-                  type="text"
-                  placeholder="Or Enter Image URL"
-                  value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                  required
-                  className="px-4 py-2 border border-border rounded-sm"
-                  data-testid="product-image-input"
-                />
-                {formData.imageUrl && (
-                  <img 
-                    src={formData.imageUrl} 
-                    alt="Preview" 
-                    className="col-span-2 h-32 object-cover rounded"
+                <div className="md:col-span-2">
+                  <ImageUploadWidget
+                    label="Product Image"
+                    value={formData.imageUrl}
+                    onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                    required={true}
                   />
-                )}
+                </div>
+                
                 <input
                   type="number"
                   placeholder="Price"

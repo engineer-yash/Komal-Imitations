@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
+import ImageUploadWidget from '../../components/ImageUploadWidget';
 
 export default function AdminCollections() {
   const router = useRouter();
   const [collections, setCollections] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingCollection, setEditingCollection] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     imageUrl: '',
@@ -31,45 +31,6 @@ export default function AdminCollections() {
       setCollections(res.data);
     } catch (error) {
       console.error('Error:', error);
-    }
-  };
-
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setUploading(true);
-    try {
-      // Get upload signature
-      const signatureRes = await axios.post('/api/cloudinary/upload-signature', {
-        folder: 'Home/komal_imitation_jewellery'
-      });
-
-      // Upload to Cloudinary
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('api_key', signatureRes.data.apiKey);
-      formData.append('timestamp', signatureRes.data.timestamp);
-      formData.append('signature', signatureRes.data.signature);
-      formData.append('folder', signatureRes.data.folder);
-
-      const uploadRes = await axios.post(
-        `https://api.cloudinary.com/v1_1/${signatureRes.data.cloudName}/image/upload`,
-        formData
-      );
-
-      setFormData(prev => ({
-        ...prev,
-        imageUrl: uploadRes.data.secure_url,
-        cloudinaryPublicId: uploadRes.data.public_id
-      }));
-      
-      alert('Image uploaded successfully!');
-    } catch (error) {
-      console.error('Upload error:', error);
-      alert('Failed to upload image');
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -174,42 +135,12 @@ export default function AdminCollections() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Upload Image from Device
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  disabled={uploading}
-                  className="w-full px-4 py-2 border border-border rounded-sm"
-                  data-testid="collection-image-upload"
-                />
-                {uploading && (
-                  <p className="text-sm text-primary mt-2">Uploading to Cloudinary...</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Or Enter Image URL</label>
-                <input
-                  type="text"
-                  placeholder="Image URL"
-                  value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                  required
-                  className="w-full px-4 py-2 border border-border rounded-sm"
-                  data-testid="collection-image-url-input"
-                />
-                {formData.imageUrl && (
-                  <img 
-                    src={formData.imageUrl} 
-                    alt="Preview" 
-                    className="mt-2 h-32 object-cover rounded"
-                  />
-                )}
-              </div>
+              <ImageUploadWidget
+                label="Collection Image"
+                value={formData.imageUrl}
+                onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                required={true}
+              />
 
               <div>
                 <label className="block text-sm font-medium mb-2">Description (Optional)</label>

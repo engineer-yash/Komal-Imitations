@@ -83,7 +83,7 @@ export default function Navbar() {
                 >
                   <div className="relative w-10 h-10">
                     <Image
-                      src="https://customer-assets.emergentagent.com/job_4b1fb28f-218c-488b-9019-df0fd7bcb977/artifacts/k6dqrr7z_Logo.jpeg"
+                      src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769777460/Logo_zozcty.jpg"
                       alt="Komal Jewellers"
                       fill
                       className="object-contain"
@@ -106,7 +106,7 @@ export default function Navbar() {
                 >
                   <div className="relative w-16 h-16 sm:w-20 sm:h-20">
                     <Image
-                      src="https://customer-assets.emergentagent.com/job_4b1fb28f-218c-488b-9019-df0fd7bcb977/artifacts/k6dqrr7z_Logo.jpeg"
+                      src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769782665/Gemini_Generated_Image_5lblt65lblt65lbl-removebg_fxir4a.png"
                       alt="Komal Jewellers"
                       fill
                       className="object-contain"

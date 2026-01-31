@@ -16,7 +16,7 @@ export default function CloudinaryImport() {
 
   useEffect(() => {
     // Check authentication
-    const token = localStorage.getItem('adminToken');
+    const token = localStorage.getItem('token');
     if (!token) {
       router.push('/admin/login');
     }
@@ -96,7 +96,7 @@ export default function CloudinaryImport() {
     setError('');
 
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('token');
       const promises = analyzed.map((item) =>
         axios.post('/api/products', item.productData, {
           headers: { Authorization: `Bearer ${token}` },

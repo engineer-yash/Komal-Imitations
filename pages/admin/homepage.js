@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
+import ImageUploadWidget from '../../components/ImageUploadWidget';
 
 export default function AdminHomepage() {
   const router = useRouter();
@@ -89,12 +90,10 @@ export default function AdminHomepage() {
                   className="w-full px-4 py-2 border border-border rounded-sm"
                   rows="3"
                 />
-                <input
-                  type="text"
-                  placeholder="Hero Image URL"
+                <ImageUploadWidget
+                  label="Hero Background Image"
                   value={formData.heroImage}
-                  onChange={(e) => setFormData({ ...formData, heroImage: e.target.value })}
-                  className="w-full px-4 py-2 border border-border rounded-sm"
+                  onChange={(url) => setFormData({ ...formData, heroImage: url })}
                 />
               </div>
             </div>
@@ -116,12 +115,10 @@ export default function AdminHomepage() {
                   className="w-full px-4 py-2 border border-border rounded-sm"
                   rows="5"
                 />
-                <input
-                  type="text"
-                  placeholder="About Image URL"
+                <ImageUploadWidget
+                  label="About Section Image"
                   value={formData.aboutImage}
-                  onChange={(e) => setFormData({ ...formData, aboutImage: e.target.value })}
-                  className="w-full px-4 py-2 border border-border rounded-sm"
+                  onChange={(url) => setFormData({ ...formData, aboutImage: url })}
                 />
               </div>
             </div>
