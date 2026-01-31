@@ -22,7 +22,7 @@ export default function Footer() {
         >
           <div className="relative w-64 h-20 mx-auto mb-6">
             <Image
-              src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769839541/Slogan_sdzejt.png"
+              src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769853380/kj-logo_zu8wws.png"
               alt="Komal Jewellers - Timeless Elegance"
               fill
               className="object-contain"
