@@ -51,8 +51,8 @@ export default function Navbar() {
             href="/"
             className="flex items-center space-x-2 flex-shrink-0"
           >
-            {/* Full Slogan Logo */}
-            <div className="relative h-8 sm:h-10 md:h-12 w-[88px] sm:w-[220px] md:w-[280px]">
+            {/* Full Slogan Logo - Increased size for better visibility */}
+            <div className="relative h-10 sm:h-12 md:h-16 w-[110px] sm:w-[275px] md:w-[350px]">
               <Image
                 src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769853380/kj-logo_zu8wws.png"
                 alt="Komal Jewellery Slogan"

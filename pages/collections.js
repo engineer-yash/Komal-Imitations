@@ -9,10 +9,12 @@ export default function Collections() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Fetch collections on every mount to ensure fresh data
     fetchCollections();
   }, []);
 
   const fetchCollections = async () => {
+    setLoading(true);
     try {
       const res = await axios.get('/api/collections');
       setCollections(res.data);

@@ -20,10 +20,12 @@ export default function AdminDashboard() {
       router.push('/admin/login');
       return;
     }
+    // Fetch fresh stats on every mount
     fetchStats();
   }, []);
 
   const fetchStats = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };

@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     category: '',
     gender: '',
@@ -18,7 +18,7 @@ export default function Products() {
   });
   const router = useRouter();
 
-  // Fetch categories once on mount
+  // Fetch categories on every mount to ensure fresh data
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -28,10 +28,13 @@ export default function Products() {
     const { category } = router.query;
     if (category && category !== filters.category) {
       setFilters(prev => ({ ...prev, category }));
+    } else if (!category && filters.category) {
+      // Reset category filter if no category in URL
+      setFilters(prev => ({ ...prev, category: '' }));
     }
   }, [router.query]);
 
-  // Fetch products whenever filters change
+  // Fetch products whenever filters change or on mount
   useEffect(() => {
     fetchProducts();
   }, [filters]);

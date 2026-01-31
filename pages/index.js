@@ -14,10 +14,9 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    // Always fetch data when component mounts
+    // Fetch data on every mount to ensure fresh data
     fetchData();
   }, []);
 
@@ -36,7 +35,6 @@ export default function Home() {
       setCategories(categoriesRes.data.slice(0, 4));
       setTestimonials(testimonialsRes.data.filter(t => t.featured).slice(0, 6));
       setProducts(allProductsRes.data.slice(0, 12));
-      setDataLoaded(true);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {

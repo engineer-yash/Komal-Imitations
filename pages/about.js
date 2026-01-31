@@ -10,6 +10,7 @@ export default function About() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Fetch content on every mount to ensure fresh data
     fetchContent();
   }, []);
 

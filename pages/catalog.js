@@ -7,17 +7,22 @@ import axios from 'axios';
 
 export default function Catalog() {
   const [catalogs, setCatalogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Fetch catalogs on every mount to ensure fresh data
     fetchCatalogs();
   }, []);
 
   const fetchCatalogs = async () => {
+    setLoading(true);
     try {
       const res = await axios.get('/api/catalogs');
       setCatalogs(res.data);
     } catch (error) {
       console.error('Error fetching catalogs:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,7 +41,12 @@ export default function Catalog() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {catalogs.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-20">
+            <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
+            <p className="mt-4 text-gray-600">Loading catalogs...</p>
+          </div>
+        ) : catalogs.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">No catalogs available at the moment.</p>
           </div>
