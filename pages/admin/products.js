@@ -184,24 +184,12 @@ export default function AdminProducts() {
                 </select>
 
                 <input
-                  type="text"
-                  placeholder="Image URL"
-                  value={formData.imageUrl}
-                  onChange={(e) =>
-                    setFormData({ ...formData, imageUrl: e.target.value })
-                  }
-                  required
-                  className="px-4 py-2 border border-border rounded-sm"
-                />
-
-                <input
                   type="number"
-                  placeholder="Price"
+                  placeholder="Price (optional)"
                   value={formData.price}
                   onChange={(e) =>
                     setFormData({ ...formData, price: e.target.value })
                   }
-                  required
                   className="px-4 py-2 border border-border rounded-sm"
                 />
 
@@ -220,13 +208,21 @@ export default function AdminProducts() {
                   onChange={(e) =>
                     setFormData({ ...formData, gender: e.target.value })
                   }
-                  className="px-4 py-2 border border-border rounded-sm"
+                  className="px-4 py-2 border border-border rounded-sm md:col-span-2"
                 >
                   <option value="Unisex">Unisex</option>
                   <option value="Female">Female</option>
                   <option value="Male">Male</option>
                 </select>
               </div>
+
+              <ImageUploadWidget
+                label="Product Image"
+                value={formData.imageUrl}
+                onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                required={true}
+              />
+
               <textarea
                 placeholder="Description (optional)"
                 value={formData.description}

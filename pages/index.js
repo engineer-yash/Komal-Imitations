@@ -95,56 +95,74 @@ export default function Home() {
         
         <div className="relative h-full flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="max-w-2xl"
-            >
+            <div className="flex items-center justify-between">
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="inline-block bg-primary/20 backdrop-blur-sm border border-primary/30 px-6 py-2 rounded-full mb-6"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="max-w-2xl"
               >
-                <span className="text-white text-sm font-medium">Premium Quality | Affordable Luxury</span>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="inline-block bg-primary/20 backdrop-blur-sm border border-primary/30 px-6 py-2 rounded-full mb-6"
+                >
+                  <span className="text-white text-sm font-medium">Premium Quality | Affordable Luxury</span>
+                </motion.div>
+                
+                <h1 className="text-4xl md:text-7xl font-bold text-white mb-6 font-playfair leading-tight">
+                  {homeContent?.heroTitle || 'Timeless Elegance, Everyday Luxury'}
+                </h1>
+                <p className="text-lg md:text-2xl text-white/90 mb-10 leading-relaxed">
+                  {homeContent?.heroSubtitle || 'Discover exquisite imitation jewellery that captures the essence of tradition'}
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Link
+                      href="/products"
+                      className="bg-primary text-white hover:bg-[#B5952F] rounded-full px-10 py-4 transition-all duration-300 shadow-2xl hover:shadow-primary/50 font-medium inline-block"
+                      data-testid="shop-now-button"
+                    >
+                      Shop Now ✨
+                    </Link>
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <a
+                      href={`https://wa.me/${whatsappNumber.replace(/\+/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-foreground rounded-full px-10 py-4 transition-all duration-300 font-medium inline-block"
+                      data-testid="whatsapp-button"
+                    >
+                      WhatsApp Us
+                    </a>
+                  </motion.div>
+                </div>
               </motion.div>
-              
-              <h1 className="text-4xl md:text-7xl font-bold text-white mb-6 font-playfair leading-tight">
-                {homeContent?.heroTitle || 'Timeless Elegance, Everyday Luxury'}
-              </h1>
-              <p className="text-lg md:text-2xl text-white/90 mb-10 leading-relaxed">
-                {homeContent?.heroSubtitle || 'Discover exquisite imitation jewellery that captures the essence of tradition'}
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    href="/products"
-                    className="bg-primary text-white hover:bg-[#B5952F] rounded-full px-10 py-4 transition-all duration-300 shadow-2xl hover:shadow-primary/50 font-medium inline-block"
-                    data-testid="shop-now-button"
-                  >
-                    Shop Now ✨
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <a
-                    href={`https://wa.me/${whatsappNumber.replace(/\+/g, '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-foreground rounded-full px-10 py-4 transition-all duration-300 font-medium inline-block"
-                    data-testid="whatsapp-button"
-                  >
-                    WhatsApp Us
-                  </a>
-                </motion.div>
-              </div>
-            </motion.div>
+
+              {/* Logo Overlay on Right Side */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="hidden lg:block relative w-64 h-64 xl:w-80 xl:h-80"
+              >
+                <Image
+                  src="https://res.cloudinary.com/dkinrfyq7/image/upload/v1769839541/Logo_p6yljj.png"
+                  alt="Komal Jewellery"
+                  fill
+                  className="object-contain opacity-90"
+                  priority
+                />
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -194,7 +212,11 @@ export default function Home() {
                       </div>
                       <div className="p-4">
                         <h3 className="font-semibold text-sm truncate mb-2">{product.name}</h3>
-                        <p className="text-primary font-bold">₹{product.price.toLocaleString()}</p>
+                        {product.price ? (
+                          <p className="text-primary font-bold">₹{product.price.toLocaleString()}</p>
+                        ) : (
+                          <p className="text-primary font-semibold text-xs">Visit Shop For Price</p>
+                        )}
                       </div>
                     </motion.div>
                   ))}
@@ -310,7 +332,11 @@ export default function Home() {
                   </div>
                   <div className="p-5">
                     <h3 className="font-semibold mb-2 text-sm md:text-base">{product.name}</h3>
-                    <p className="text-primary font-bold text-lg">₹{product.price.toLocaleString()}</p>
+                    {product.price ? (
+                      <p className="text-primary font-bold text-lg">₹{product.price.toLocaleString()}</p>
+                    ) : (
+                      <p className="text-primary font-semibold text-sm">Visit Shop For Price</p>
+                    )}
                   </div>
                 </motion.div>
               ))}

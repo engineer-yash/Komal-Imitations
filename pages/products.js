@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -14,11 +15,16 @@ export default function Products() {
     minPrice: '',
     maxPrice: '',
   });
+  const router = useRouter();
 
   useEffect(() => {
     fetchCategories();
-    fetchProducts();
-  }, []);
+    // Set category from URL if present
+    const { category } = router.query;
+    if (category) {
+      setFilters(prev => ({ ...prev, category }));
+    }
+  }, [router.query]);
 
   useEffect(() => {
     fetchProducts();
@@ -178,7 +184,11 @@ export default function Products() {
                         <p className="text-xs text-gray-600 mb-2 line-clamp-2">{product.description}</p>
                       )}
                       <div className="flex justify-between items-center mt-2">
-                        <p className="text-primary font-bold">₹{product.price.toLocaleString()}</p>
+                        {product.price ? (
+                          <p className="text-primary font-bold">₹{product.price.toLocaleString()}</p>
+                        ) : (
+                          <p className="text-primary font-semibold text-sm">Visit Shop For Price</p>
+                        )}
                         {product.gender && (
                           <span className="text-xs text-muted-foreground">{product.gender}</span>
                         )}
